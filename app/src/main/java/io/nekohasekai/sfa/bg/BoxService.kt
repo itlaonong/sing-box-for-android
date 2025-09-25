@@ -17,7 +17,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
-import go.Seq
 import io.nekohasekai.libbox.BoxService
 import io.nekohasekai.libbox.CommandServer
 import io.nekohasekai.libbox.CommandServerHandler
@@ -32,6 +31,7 @@ import io.nekohasekai.sfa.constant.Alert
 import io.nekohasekai.sfa.constant.Status
 import io.nekohasekai.sfa.database.ProfileManager
 import io.nekohasekai.sfa.database.Settings
+import io.nekohasekai.sfa.database.log.Logs
 import io.nekohasekai.sfa.ktx.hasPermission
 import io.nekohasekai.sfa.ui.MainActivity
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -40,6 +40,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 import java.io.File
 
 class BoxService(
@@ -130,8 +131,19 @@ class BoxService(
             DefaultNetworkMonitor.start()
             Libbox.setMemoryLimit(!Settings.disableMemoryLimit)
 
+            val getLog = fun(): JSONObject {
+                val log = JSONObject()
+                log.put("disabled", Logs.disabled)
+                log.put("level", Logs.level)
+                log.put("timestamp", Logs.timestamp)
+                return log
+            }
+
             val newService = try {
-                Libbox.newService(content, platformInterface)
+                val config = JSONObject(content)
+                config.put("log", getLog())
+
+                Libbox.newService(config.toString(), platformInterface)
             } catch (e: Exception) {
                 stopAndAlert(Alert.CreateService, e.message)
                 return
@@ -179,7 +191,7 @@ class BoxService(
             }.onFailure {
                 writeLog("service: error when closing: $it")
             }
-            Seq.destroyRef(refnum)
+            //Seq.destroyRef(refnum)
         }
         commandServer?.setService(null)
         commandServer?.resetLog()
@@ -236,7 +248,7 @@ class BoxService(
                 }.onFailure {
                     writeLog("service: error when closing: $it")
                 }
-                Seq.destroyRef(refnum)
+                //Seq.destroyRef(refnum)
             }
             commandServer?.setService(null)
             boxService = null
@@ -244,7 +256,7 @@ class BoxService(
 
             commandServer?.apply {
                 close()
-                Seq.destroyRef(refnum)
+                //Seq.destroyRef(refnum)
             }
             commandServer = null
             Settings.startedByUser = false

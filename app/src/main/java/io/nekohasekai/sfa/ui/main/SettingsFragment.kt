@@ -26,6 +26,7 @@ import io.nekohasekai.sfa.ktx.setSimpleItems
 import io.nekohasekai.sfa.ktx.text
 import io.nekohasekai.sfa.ui.MainActivity
 import io.nekohasekai.sfa.ui.debug.DebugActivity
+import io.nekohasekai.sfa.ui.profile.log.LogSettingActivity
 import io.nekohasekai.sfa.ui.profileoverride.ProfileOverrideActivity
 import io.nekohasekai.sfa.vendor.Vendor
 import kotlinx.coroutines.Dispatchers
@@ -105,6 +106,10 @@ class SettingsFragment : Fragment() {
                     )
                 )
             }
+        }
+
+        binding.logSettingCardButton.setOnClickListener {
+            startActivity(Intent(requireContext(), LogSettingActivity::class.java))
         }
         binding.configureOverridesButton.setOnClickListener {
             startActivity(Intent(requireContext(), ProfileOverrideActivity::class.java))

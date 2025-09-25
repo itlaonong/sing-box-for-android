@@ -124,6 +124,9 @@
             android:name="io.nekohasekai.sfa.ui.profileoverride.ProfileOverrideActivity"
             android:exported="false" />
         <activity
+            android:name="io.nekohasekai.sfa.ui.profile.log.LogSettingActivity"
+            android:exported="false" />
+        <activity
             android:name="io.nekohasekai.sfa.ui.profileoverride.PerAppProxyActivity"
             android:exported="false" />
         <activity

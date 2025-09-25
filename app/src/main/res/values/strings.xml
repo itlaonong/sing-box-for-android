@@ -63,6 +63,10 @@
     <string name="enabled">Enabled</string>
     <string name="disabled">Disabled</string>
 
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
     <string name="settings_clear_working_directory">Clear Working Directory</string>
 
     <string name="error_title">Error</string>

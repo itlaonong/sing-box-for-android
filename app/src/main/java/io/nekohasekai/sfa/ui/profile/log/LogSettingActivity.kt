@@ -3,10 +3,9 @@ package io.nekohasekai.sfa.ui.profile.log
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import io.nekohasekai.sfa.R
+import io.nekohasekai.sfa.constant.EnabledType
 import io.nekohasekai.sfa.constant.LogLevel
-import io.nekohasekai.sfa.constant.PerAppProxyUpdateType
 import io.nekohasekai.sfa.constant.YesNo
-import io.nekohasekai.sfa.database.Settings
 import io.nekohasekai.sfa.database.log.Logs
 import io.nekohasekai.sfa.databinding.ActivityLogSettingBinding
 import io.nekohasekai.sfa.ktx.addTextChangedListener
@@ -24,15 +23,12 @@ class LogSettingActivity : AbstractActivity<ActivityLogSettingBinding>() {
         super.onCreate(savedInstanceState)
 
         setTitle("日志配置")
-        binding.logLevel.isEnabled = !Logs.disabled
-        binding.logTimestamp.isEnabled = !Logs.disabled
-
-        binding.logDisabled.addTextChangedListener {
-            val v = !YesNo.valueOf(this@LogSettingActivity, it).value()
-            binding.logLevel.isEnabled = !v
-            binding.logTimestamp.isEnabled = !v
+        binding.logLevel.isEnabled = Logs.enabled
+        binding.logEnabled.addTextChangedListener {
+            val v = EnabledType.valueOf(this@LogSettingActivity, it).boolValue
+            binding.logLevel.isEnabled = v
             lifecycleScope.launch(Dispatchers.IO) {
-                Logs.disabled = v
+                Logs.enabled = v
 
             }
         }
@@ -40,12 +36,6 @@ class LogSettingActivity : AbstractActivity<ActivityLogSettingBinding>() {
             lifecycleScope.launch(Dispatchers.IO) {
                 Logs.level =
                     LogLevel.levelOf(it).level
-            }
-        }
-        binding.logTimestamp.addTextChangedListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                Logs.timestamp =
-                    YesNo.valueOf(this@LogSettingActivity, it).value()
             }
         }
         lifecycleScope.launch(Dispatchers.IO) {
@@ -56,20 +46,15 @@ class LogSettingActivity : AbstractActivity<ActivityLogSettingBinding>() {
 
 
     private suspend fun reloadSettings() {
-        val logDisabled = Logs.disabled
+        val logEnabled = Logs.enabled
         val logLevel = Logs.level
-        val logTimestamp = Logs.timestamp
         withContext(Dispatchers.Main) {
-            binding.logDisabled.text =
-                YesNo.valueOf(!logDisabled)
+            binding.logEnabled.text =
+                EnabledType.from(logEnabled)
                     .getString(this@LogSettingActivity)
             binding.logLevel.text = logLevel
-            binding.logTimestamp.text =
-                YesNo.valueOf(logTimestamp)
-                    .getString(this@LogSettingActivity)
-            binding.logDisabled.setSimpleItems(R.array.yes_no)
+            binding.logEnabled.setSimpleItems(R.array.enabled)
             binding.logLevel.setSimpleItems(R.array.log_level)
-            binding.logTimestamp.setSimpleItems(R.array.yes_no)
 
         }
     }

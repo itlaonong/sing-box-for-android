@@ -30,7 +30,6 @@ object Logs {
 
     val dataStore = RoomPreferenceDataStore(Logs.instance.keyValuePairDao())
 
-    var disabled by dataStore.boolean(LogKey.DISABLED) { false }
+    var enabled by dataStore.boolean(LogKey.ENABLED) { true }
     var level by dataStore.string(LogKey.LEVEL) { "error" }
-    var timestamp by dataStore.boolean(LogKey.TIMESTAMP) { true }
 }

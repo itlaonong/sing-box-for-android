@@ -133,9 +133,8 @@ class BoxService(
 
             val getLog = fun(): JSONObject {
                 val log = JSONObject()
-                log.put("disabled", Logs.disabled)
+                log.put("disabled", !Logs.enabled)
                 log.put("level", Logs.level)
-                log.put("timestamp", Logs.timestamp)
                 return log
             }
 

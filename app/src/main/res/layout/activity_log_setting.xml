@@ -44,20 +44,20 @@
                         android:textAppearance="?attr/textAppearanceTitleLarge" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/logDisabled"
+                        android:id="@+id/log_enabled"
                         style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
-                        android:hint="是否启用日志">
+                        android:hint="启用日志">
 
                         <AutoCompleteTextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none"
-                            android:text="@string/yes"
-                            app:simpleItems="@array/yes_no"
+                            android:text="@string/enabled"
+                            app:simpleItems="@array/enabled"
                             tools:ignore="LabelFor" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -80,25 +80,6 @@
                             tools:ignore="LabelFor" />
 
                     </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/logTimestamp"
-                        style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="添加时间到每行">
-
-                        <AutoCompleteTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="none"
-                            android:text="@string/yes"
-                            app:simpleItems="@array/yes_no"
-                            tools:ignore="LabelFor" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
